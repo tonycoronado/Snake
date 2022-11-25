@@ -2,6 +2,7 @@
 
 import turtle
 import time
+import random
 
 delay = 0.3
 
@@ -20,6 +21,16 @@ head.color("black")
 head.penup()
 head.goto(0,0)
 head.direction = "stop"
+
+segments = []
+
+# Snake Food
+food = turtle.Turtle()
+food.speed(0)               
+food.shape("circle")
+food.color("red")
+food.penup()
+food.goto(0, 100)
 
 # Functions
 def go_up():
@@ -62,7 +73,34 @@ def move():
 
 # Main Game Loop
 while True:
-    wn.update()     #Always update the screen
+    wn.update()     # Always update the screen
+
+    # Check for collision with the food
+    if head.distance(food) < 20:
+        # Move food to random stop
+        x = random.randint(-285, 285)
+        y = random.randint(-285, 285)
+        food.goto(x, y)
+
+        # Add segment to the body
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("grey")
+        new_segment.penup()
+        segments.append(new_segment)
+
+    # Move the end segments first in reverse order
+    for index in range(len(segments)-1, 0, -1):
+        x = segments[index-1].xcor()
+        y = segments[index-1].ycor()
+        segments[index].goto(x, y)
+
+    # Move segment 0 to where the head is
+    if len(segments) > 0:
+        x = head.xcor()
+        y = head.ycor()
+        segments[0].goto(x, y)
 
     move()
 
