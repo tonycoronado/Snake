@@ -3,6 +3,7 @@
 import turtle
 import time
 import random
+import winsound
 
 delay = 0.2
  # Score
@@ -87,16 +88,23 @@ def move():
         x = head.xcor()
         head.setx(x + 20)
 
+# Play Initial Sound
+winsound.PlaySound("StartGame.wav", winsound.SND_ASYNC)
 
 # Main Game Loop
 while True:
     wn.update()     # Always update the screen
+
+    
 
     # Check for Border Collisions
     if (head.xcor() > 290 or head.xcor() < -290 or head.ycor() > 290 or head.ycor() < -290 ):
         time.sleep(1)
         head.goto(0, 0)
         head.direction = "stop"
+
+        # Play Losing Sound
+        winsound.PlaySound("lose.wav", winsound.SND_ASYNC)
 
         # Hide the segments
         for segment in segments:
@@ -112,6 +120,9 @@ while True:
 
         # Reset Delay
         delay = 0.2
+
+        # Play Initial Sound
+        winsound.PlaySound("StartGame.wav", winsound.SND_ASYNC)
 
     # Check for collision with the food
     if head.distance(food) < 20:
@@ -133,6 +144,9 @@ while True:
 
         # Increase Score
         score += 10
+
+        # PLay Eat Sound
+        winsound.PlaySound("EatFood2.wav", winsound.SND_ASYNC)
 
         if score > high_score:
             high_score = score
@@ -159,6 +173,10 @@ while True:
             time.sleep(1)
             head.goto(0,0)
             head.direction = "stop"
+
+            # Play Losing Sound
+            winsound.PlaySound("lose.wav", winsound.SND_ASYNC)
+
             # Hide the segments
             for segment in segments:
                 segment.goto(1000, 1000)
@@ -173,6 +191,9 @@ while True:
 
             # Reset Delay
             delay = 0.2
+
+            # Play Initial Sound
+            winsound.PlaySound("StartGame.wav", winsound.SND_ASYNC)
             
 
     time.sleep(delay)
